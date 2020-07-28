@@ -1,5 +1,5 @@
 [deploy_servers]
-deploy     ansible_host=148.251.92.157 ansible_user=deployuser ansible_ssh_private_file=/home/admintest/.ssh/id_rsa 
-#orangepi   ansible_host=93.126.126.178 ansible_user=orangepi   ansible_ssh_private_file=/home/admintest/.ssh/id_rsa
+deploy     ansible_host=XXX.251.92.157 ansible_user=deployuser ansible_ssh_private_file=/home/admintest/.ssh/id_rsa 
+#orangepi   ansible_host=XXX.126.126.178 ansible_user=orangepi   ansible_ssh_private_file=/home/admintest/.ssh/id_rsa
 
 
