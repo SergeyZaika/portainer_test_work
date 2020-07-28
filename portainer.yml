@@ -1,0 +1,81 @@
+---
+- name: install docker, portainer
+  hosts: deploy
+  become: yes
+
+  tasks: 
+  - name: install aptitude
+    apt: 
+      name: aptitude
+      state: latest
+      update_cache: yes
+      force_apt_get: yes
+  - name: install requiared   
+    apt: name={{ item }} state=latest update_cache=yes
+    loop: ['apt-transport-https','ca-certificates','curl','gnupg2','software-properties-common','python3-pip','virtualenv','python3-setuptools']
+  
+  - name: Add Docker url key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+  
+  - name: Add Docker repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+  - name: Update apt and install docker-ce
+    apt:
+      update_cache: yes
+      name: docker-ce  
+      state: latest
+    
+  - name: open 9000 
+    shell: iptables -I INPUT -p tcp --dport 9000 -j ACCEPT
+  
+  - name: Run Pontainer
+    shell: docker volume create portainer_data; docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+
+
+
+
+
+
+
+
+
+
+
+
+
+      #  - name: set docker_portainer_volume
+      #    set_fact: docker_portainer_volume="/opt/docker/portainer"
+
+      #  - name: create volume directory for data
+      #    file: path=/opt/docker/portainer/data state=directory recurse=yes
+
+      #  - name: initial database
+      #    copy:
+      #        src: 
+      #        dest: /opt/docker/portainer/data/portainer.db
+      #        mode: 0600
+      #        force: no
+      #    when:  !=  
+  
+      #  - name: install container
+      #    docker_container:
+      #        name: portainer
+      #        image: portainer/portainer:1.11.3
+      #        pull: no
+      #        state: started
+      #        restart_policy: always
+      #        volumes:
+      #           - /var/run/docker.sock:/var/run/docker.sock
+      #           - /opt/docker/portainer/data:/data
+      #        ports:
+      #           - 9000:9000
+
+
+
+
+

@@ -1,0 +1,26 @@
+---
+- name: Create a login user
+  hosts: deploy
+  become: yes
+  
+  tasks:
+
+    - name: Add user "contentmanager" to remote server
+      user: 
+        name: contentmanager
+        password: '$6$McoS/2vb.1C$BvbStPGitJDtYmv63I68hCgcByzGOHTEc80ckN/tP1iNT.hBTKFLFzeindKk0anLfj3.M05zuFlz1PZcQ8wph/'
+        groups: www-data, sudo
+        state: present
+        shell: /bin/bash
+        system: no
+        createhome: yes
+        home: /home/contentmanager
+    - name: create permissions
+      file:
+        path: /var/www/html 
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+        mode: 0775
+       
